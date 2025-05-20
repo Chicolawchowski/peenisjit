@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Failcut Loop</title>
+  <script>
+    const shortcutName = encodeURIComponent("failcut");
+    // Replace this with your actual hosted URL (no trailing slash)
+    const baseURL      = "https://crimson-arda-51.tiiny.site";
+
+    function bounce() {
+      // Use a timestamp-based hash so the page URL changes without a full reload
+      const frag      = Date.now();
+      const returnURL = encodeURIComponent(`${baseURL}#${frag}`);
+      const xcb       = `shortcuts://x-callback-url/run-shortcut`
+                      + `?name=${shortcutName}`
+                      + `&x-success=${returnURL}`
+                      + `&x-error=${returnURL}`;
+      location.href = xcb;
+    }
+
+    // First trigger on load
+    window.addEventListener("load", () => {
+      setTimeout(bounce, 800);
+    });
+
+    // Re-trigger on every hashchange (i.e. callback return)
+    window.addEventListener("hashchange", () => {
+      setTimeout(bounce, 800);
+    });
+  </script>
+</head>
+<body>
+  <p>
+    Looping <strong>failcut</strong>…<br>
+    If nothing happens, <button onclick="bounce()">tap here</button>.
+  </p>
+</body>
+</html>
+
